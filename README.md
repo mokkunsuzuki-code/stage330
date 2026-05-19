@@ -1,75 +1,164 @@
-# REMEDA Stage329: Evidence Match Gate + Audit Submission Package
+# REMEDA Stage330
 
-Stage329 extends the Stage328 Evidence Match Gate into a submit-ready audit artifact workflow.
+## Stage329 Audit Submission Package + Stage330 Evidence Hash Auto Builder
 
-## Core Flow
+Stage330 extends the Stage329 audit submission workflow by adding automatic SHA256 evidence hash generation.
 
-AI Claim  
-↓  
-Reproduction Evidence  
-↓  
-Stage328 Evidence Match Gate  
-↓  
-accept / pending / reject  
-↓  
-Stage329 Signed Audit Report  
+This stage does not replace Stage329.
 
-## What Stage329 Adds
+It adds:
 
-- Stage328 interactive verification page
-- Stage327 + Stage328 integrated builder
-- Machine-readable Stage328 decision JSON
-- Stage329 audit submission layer
-- Signed audit report
-- Audit JSON
-- Audit signature
-- Verification instructions
-- Japanese and English public pages
+- automatic evidence hash generation
+- hash manifest generation
+- SHA256 verification support
+- Stage328-ready reproduction evidence binding
 
-## Public Pages
+---
 
-Japanese:
+# Architecture
 
-https://mokkunsuzuki-code.github.io/stage329/
+AI Claim
+↓
+Reproduction Evidence
+↓
+Stage328 Evidence Match Gate
+↓
+accept / pending / reject
+↓
+Stage329 Signed Audit Report
+↓
+Stage330 Evidence Hash Auto Builder
 
-English:
+---
 
-https://mokkunsuzuki-code.github.io/stage329/en/
+# Stage330 Features
 
-## Public Verification Files
+## Core Features
 
-- `docs/index.html`
-- `docs/en/index.html`
-- `docs/reports/audit_report.html`
-- `docs/reports/audit_report.json`
-- `docs/reports/audit_report.json.asc`
-- `docs/reports/audit_report.sha256`
-- `docs/reports/verify.txt`
+### 1. Read Evidence Files
 
-## Security Boundary
+Reads:
 
-Private core logic is not published.
+- prompt.txt
+- response.txt
+- run.log
 
-Excluded from GitHub:
+---
 
-- `core/`
-- `engine/`
-- `private/`
-- `secrets/`
-- `keys/`
-- `.env`
-- private keys
+### 2. Automatic SHA256 Generation
 
-Only public verification artifacts and audit submission files are published.
+Automatically calculates SHA256 hashes for evidence files.
 
-## Verify
+---
 
-```bash
-shasum -a 256 docs/reports/audit_report.json
+### 3. Automatic SHA256 Map
 
-gpg --verify docs/reports/audit_report.json.asc docs/reports/audit_report.json
-License
+Builds an evidence hash map automatically.
+
+---
+
+### 4. reproduction_evidence.json Integration
+
+Automatically embeds generated hashes into:
+
+docs/evidence/reproduction_evidence.json
+
+---
+
+### 5. Stage328 Gate Compatibility
+
+Generated evidence is directly usable by:
+
+- Stage328 Evidence Match Gate
+
+---
+
+# Extended Features
+
+## 6. hash_manifest.json Generation
+
+Generated file:
+
+docs/evidence/hash_manifest.json
+
+---
+
+## 7. hash_manifest.sha256 Generation
+
+Generated file:
+
+docs/evidence/hash_manifest.sha256
+
+---
+
+## 8. Audit Report Integration
+
+Evidence hash maps are integrated into:
+
+- audit_report.json
+- audit_report.html
+
+---
+
+## 9. verify_evidence_hashes.py
+
+Verification tool:
+
+tools/verify_evidence_hashes.py
+
+Verifies:
+
+- file existence
+- SHA256 integrity
+- evidence consistency
+
+---
+
+# Generated Files
+
+## Evidence
+
+- docs/evidence/hash_manifest.json
+- docs/evidence/hash_manifest.sha256
+- docs/evidence/reproduction_evidence.json
+
+## Reports
+
+- docs/report/audit_report.json
+- docs/report/audit_report.html
+
+---
+
+# Security Model
+
+Stage330 keeps core logic private.
+
+The following remain excluded from GitHub:
+
+- tools/
+- local verification core
+- private signing logic
+- secrets / keys
+
+This repository only exposes public verification artifacts.
+
+---
+
+# Public Verification
+
+## Japanese Page
+
+https://mokkunsuzuki-code.github.io/stage330/
+
+## English Page
+
+https://mokkunsuzuki-code.github.io/stage330/en/
+
+---
+
+# License
 
 MIT License
 
 Copyright (c) 2025 Motohiro Suzuki
+
