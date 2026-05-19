@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="ja" translate="no">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="google" content="notranslate">
   <title>REMEDA Stage329 - Stage328 Evidence Match Gate + Audit Submission</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; background: #f6f8fa; color: #24292f; }
@@ -28,7 +27,7 @@
 <header>
   <h1>REMEDA Stage329</h1>
   <p>Stage328 Evidence Match Gate + Stage329 Audit Submission Package</p>
-  <span class="badge">Stage328の入力検証機能を継承</span>
+  <span class="badge">Stage329の監査提出機能を継承し、SHA256自動生成を追加</span>
 </header>
 
 <main>
@@ -38,13 +37,13 @@
       Stage329 does not replace Stage328.
       It extends the Stage328 integrated builder into a submit-ready signed audit artifact workflow.
     </p>
-    <pre>AI主張
+    <pre>AI Claim
 ↓
-再現証拠
+Reproduction Evidence
 ↓
 Stage328 Evidence Match Gate
 ↓
-受け入れ / 保留 / 拒否
+accept / pending / reject
 ↓
 Stage329 Signed Audit Report</pre>
   </section>
@@ -59,11 +58,11 @@ Stage329 Signed Audit Report</pre>
 
   <section class="grid">
     <div class="card">
-      <h2>AI脆弱性主張</h2>
+      <h2>AI Vulnerability Claim</h2>
 
-      <label>脆弱性タイプ</label>
+      <label>Vulnerability Type</label>
       <select id="vulnerability_type">
-        <option>プロンプトインジェクション</option>
+        <option>prompt-injection</option>
         <option>data-leakage</option>
         <option>unsafe-output</option>
         <option>policy-bypass</option>
@@ -71,12 +70,12 @@ Stage329 Signed Audit Report</pre>
 
       <label>Target</label>
       <select id="target">
-        <option>モデル出力</option>
+        <option>model-output</option>
         <option>repository</option>
         <option>api-response</option>
       </select>
 
-      <label>AI主張 ID</label>
+      <label>AI Claim ID</label>
       <input id="ai_claim_id" value="claim-001">
 
       <label>Repository</label>
@@ -96,32 +95,32 @@ Stage329 Signed Audit Report</pre>
     </div>
 
     <div class="card">
-      <h2>再現証拠</h2>
+      <h2>Reproduction Evidence</h2>
 
-      <label>再現ID</label>
+      <label>Reproduction ID</label>
       <input id="reproduction_id" value="repro-001">
 
-      <label>再現リポジトリ</label>
+      <label>Reproduction Repository</label>
       <input id="repro_repository" value="demo/repository">
 
-      <label>再現コミット</label>
+      <label>Reproduction Commit</label>
       <input id="repro_commit" value="abc123demo">
 
-      <label>再現ファイル</label>
+      <label>Reproduction File</label>
       <input id="repro_file" value="src/auth.py">
 
-      <label>再現ライン範囲</label>
+      <label>Reproduction Line Range</label>
       <input id="repro_line_range" value="40-55">
 
       <label>Result</label>
       <select id="result_status">
-        <option>再現済み</option>
+        <option>reproduced</option>
         <option>partial</option>
         <option>inconclusive</option>
       </select>
 
-      <label>再現メモ</label>
-      <textarea id="reproduction_note">隔離環境で安全に再現確認しました。</textarea>
+      <label>Reproduction Note</label>
+      <textarea id="reproduction_note">Safely reproduced under isolated conditions.</textarea>
 
       <label>Evidence Files</label>
       <textarea id="evidence_files">prompt.txt
@@ -129,7 +128,7 @@ response.txt
 run.log</textarea>
 
       <label>SHA256 Map</label>
-      <textarea id="sha256_map" translate="no" class="notranslate">{
+      <textarea id="sha256_map">{
   "prompt.txt": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "response.txt": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
   "run.log": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
@@ -145,16 +144,16 @@ run.log</textarea>
     <button class="secondary" onclick="downloadStage328Decision()">Download stage328_decision.json</button>
     <a class="button green" href="./reports/audit_report.html">Open Stage329 Audit Report</a>
 
-    <h2>生成されたStage328 JSON</h2>
-    <pre id="generated_json" translate="no" class="notranslate">Generated JSON appears here.</pre>
+    <h2>Generated Stage328 JSON</h2>
+    <pre id="generated_json">Generated JSON appears here.</pre>
 
-    <h2>Stage328 Gate判定</h2>
+    <h2>Stage328 Gate Decision</h2>
     <div id="decision_box" class="card pending">Gate decision appears here.</div>
-    <pre id="gate_decision" translate="no" class="notranslate">{}</pre>
+    <pre id="gate_decision">{}</pre>
   </section>
 
   <section class="card">
-    <h2>Stage329監査提出レイヤー</h2>
+    <h2>Stage329 Audit Submission Layer</h2>
     <p>
       After generating the Stage328 decision, Stage329 converts it into an audit package:
       JSON, HTML, signature, hash, and verification instructions.
@@ -166,18 +165,15 @@ run.log</textarea>
   </section>
 
   <section class="card">
-    <h2>判定ルール</h2>
-    <p><strong>受け入れ:</strong> all checks are true</p>
-    <p><strong>保留:</strong> target/evidence exist but SHA256 or signature missing</p>
-    <p><strong>拒否:</strong> target mismatch or evidence missing</p>
+    <h2>Decision Rules</h2>
+    <p><strong>accept:</strong> all checks are true</p>
+    <p><strong>pending:</strong> target/evidence exist but SHA256 or signature missing</p>
+    <p><strong>reject:</strong> target mismatch or evidence missing</p>
   </section>
 
   <section class="card">
-    <h2>公開検証ファイル</h2>
+    <h2>Public Verification Files</h2>
     <a class="button secondary" href="./ja/">Japanese Page</a>
-    
-<a class="button secondary" href="./en/">English Page</a>
-
     <a class="button secondary" href="./schema/vulnerability-evidence-intake.schema.json">Schema JSON</a>
     <a class="button secondary" href="./examples/demo-intake.json">Example JSON</a>
     <a class="button secondary" href="./proof/demo-ai-vulnerability.html">Proof Viewer</a>
@@ -272,10 +268,7 @@ function generateStage328() {
 
   const box = document.getElementById("decision_box");
   box.className = "card " + decision;
-  
-const labelMap = { accept: "accept", pending: "pending", reject: "reject" };
-box.textContent = "Decision: " + (labelMap[decision] || decision);
-
+  box.textContent = "Decision: " + decision;
 }
 
 function downloadStage328Decision() {
@@ -293,3 +286,77 @@ generateStage328();
 </script>
 </body>
 </html>
+
+<section style="margin: 48px auto; max-width: 1100px; padding: 32px; background: #ffffff; border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,0.08); font-family: Arial, sans-serif;">
+
+  <div style="display: inline-block; padding: 6px 12px; border-radius: 999px; background: #dcfce7; color: #166534; font-weight: bold; font-size: 14px;">
+    New in Stage330
+  </div>
+
+  <h2 style="font-size: 32px; margin-top: 18px;">Evidence Hash Auto Builder</h2>
+
+  <p style="font-size: 17px; color: #374151; line-height: 1.8;">
+    Stage330 extends the Stage329 Audit Submission Package by automatically generating SHA256 hashes from reproduction evidence files.
+  </p>
+
+  <div style="margin-top: 28px; padding: 24px; background: #111827; color: white; border-radius: 14px; overflow-x: auto;">
+<pre style="margin: 0; white-space: pre-wrap;">
+Stage329:
+AI Claim
+  ↓
+Reproduction Evidence
+  ↓
+QSP Decision
+  ↓
+Signed Audit Report
+
+Stage330 adds:
+prompt.txt
+response.txt
+run.log
+  ↓
+Automatic SHA256
+  ↓
+hash_manifest.json
+  ↓
+reproduction_evidence.json
+  ↓
+Stage328 Evidence Match Gate
+  ↓
+Stage329 Audit Submission Package
+</pre>
+  </div>
+
+  <h3 style="margin-top: 32px;">Generated Evidence Artifacts</h3>
+
+  <ul style="font-size: 16px; line-height: 1.9;">
+    <li><a href="evidence/hash_manifest.json">docs/evidence/hash_manifest.json</a></li>
+    <li><a href="evidence/hash_manifest.sha256">docs/evidence/hash_manifest.sha256</a></li>
+    <li><a href="evidence/reproduction_evidence.json">docs/evidence/reproduction_evidence.json</a></li>
+    <li><a href="report/audit_report.json">docs/report/audit_report.json</a></li>
+    <li><a href="report/audit_report.html">docs/report/audit_report.html</a></li>
+  </ul>
+
+  <h3 style="margin-top: 32px;">What Stage330 Improves</h3>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 15px;">
+    <tr>
+      <th style="text-align: left; padding: 12px; background: #111827; color: white;">Before Stage330</th>
+      <th style="text-align: left; padding: 12px; background: #111827; color: white;">After Stage330</th>
+    </tr>
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">Manual SHA256 map entry</td>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">Automatic SHA256 map generation</td>
+    </tr>
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">Higher risk of copy mistakes</td>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">Lower risk of human error</td>
+    </tr>
+    <tr>
+      <td style="padding: 12px;">Audit package starts after evidence hash exists</td>
+      <td style="padding: 12px;">Audit package includes the hash generation layer</td>
+    </tr>
+  </table>
+
+</section>
+
