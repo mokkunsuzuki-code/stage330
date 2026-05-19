@@ -44,7 +44,7 @@
 ↓
 Stage328 Evidence Match Gate
 ↓
-受け入れ / 保留 / 拒否
+受け入れ / 保留 / reject
 ↓
 Stage329 Signed Audit Report</pre>
   </section>
@@ -169,7 +169,7 @@ run.log</textarea>
     <h2>判定ルール</h2>
     <p><strong>受け入れ:</strong> all checks are true</p>
     <p><strong>保留:</strong> target/evidence exist but SHA256 or signature missing</p>
-    <p><strong>拒否:</strong> target mismatch or evidence missing</p>
+    <p><strong>reject:</strong> target mismatch or evidence missing</p>
   </section>
 
   <section class="card">
@@ -185,67 +185,6 @@ run.log</textarea>
     <a class="button secondary" href="./history/history.json">Audit History JSON</a>
     <a class="button secondary" href="./verify/third-party-verify.txt">Third-Party Verification Guide</a>
   </section>
-
-  <section class="card">
-    <h2>Stage330 Evidence Hash Auto Builder</h2>
-    <p>
-      Stage330 adds automatic SHA256 hash generation on top of the Stage329 audit submission package.
-      It turns evidence files into a hash manifest that can be used by the Stage328 Evidence Match Gate.
-    </p>
-
-    <pre>prompt.txt
-response.txt
-run.log
-↓
-Automatic SHA256 Generation
-↓
-hash_manifest.json
-↓
-hash_manifest.sha256
-↓
-reproduction_evidence.json
-↓
-Stage328 Evidence Match Gate
-↓
-Stage329 Audit Submission Package</pre>
-
-    <h3>Generated Stage330 Files</h3>
-    <ul>
-      <li><a href="evidence/hash_manifest.json">docs/evidence/hash_manifest.json</a></li>
-      <li><a href="evidence/hash_manifest.sha256">docs/evidence/hash_manifest.sha256</a></li>
-      <li><a href="evidence/reproduction_evidence.json">docs/evidence/reproduction_evidence.json</a></li>
-      <li><a href="report/audit_report.json">docs/report/audit_report.json</a></li>
-      <li><a href="report/audit_report.html">docs/report/audit_report.html</a></li>
-    </ul>
-
-    <h3>Evidence Hash Map</h3>
-    <pre>{
-  "samples/prompt.txt": "SHA256 generated automatically",
-  "samples/response.txt": "SHA256 generated automatically",
-  "samples/run.log": "SHA256 generated automatically"
-}</pre>
-
-    <h3>What Stage330 Adds</h3>
-    <table>
-      <tr>
-        <th>Before Stage330</th>
-        <th>After Stage330</th>
-      </tr>
-      <tr>
-        <td>SHA256 map was manually written</td>
-        <td>SHA256 map is automatically generated</td>
-      </tr>
-      <tr>
-        <td>Higher risk of copy mistakes</td>
-        <td>Lower risk of human error</td>
-      </tr>
-      <tr>
-        <td>Audit package starts after evidence hashes exist</td>
-        <td>Audit package includes the evidence hash generation layer</td>
-      </tr>
-    </table>
-  </section>
-
 </main>
 
 <script>
